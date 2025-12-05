@@ -1,5 +1,6 @@
 package org.vinylshop.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -7,6 +8,7 @@ import jakarta.persistence.Table;
 @Table(name = "publisher")
 public class PublisherEntity extends BaseEntity{
 
+  @Column(nullable = false)
   private String name;
   private String address;
   private String contactDetails;
