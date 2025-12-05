@@ -1,4 +1,4 @@
-package org.vinylshop.dto;
+package org.vinylshop.dtos;
 
 public class GenreRequest {
 

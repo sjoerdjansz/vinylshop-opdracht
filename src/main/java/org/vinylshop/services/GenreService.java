@@ -1,11 +1,11 @@
-package org.vinylshop.service;
+package org.vinylshop.services;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.vinylshop.dto.GenreRequest;
+import org.vinylshop.dtos.GenreRequest;
 import org.vinylshop.entities.Genre;
 import org.vinylshop.helpers.GenreNotFoundException;
 

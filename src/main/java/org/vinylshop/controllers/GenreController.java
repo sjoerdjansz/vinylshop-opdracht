@@ -1,10 +1,7 @@
-package org.vinylshop.controller;
+package org.vinylshop.controllers;
 
-import com.sun.source.tree.TryTree;
-import jakarta.servlet.ServletRequest;
 import java.net.URI;
 import java.util.List;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.vinylshop.dto.GenreRequest;
+import org.vinylshop.dtos.GenreRequest;
 import org.vinylshop.entities.Genre;
 import org.vinylshop.helpers.GenreNotFoundException;
-import org.vinylshop.service.GenreService;
+import org.vinylshop.services.GenreService;
 
 @RestController
 @RequestMapping("/genre")
