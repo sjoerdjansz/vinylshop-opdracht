@@ -1,6 +1,5 @@
-package org.vinylshop.controller;
+package org.vinylshop.controllers;
 
-import jakarta.servlet.ServletRequest;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -14,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.vinylshop.dto.GenreRequest;
+import org.vinylshop.dtos.GenreRequest;
 import org.vinylshop.entities.Genre;
-import org.vinylshop.service.GenreService;
+import org.vinylshop.helpers.GenreNotFoundException;
+import org.vinylshop.services.GenreService;
 
 @RestController
 @RequestMapping("/genre")
 public class GenreController {
 
-  // constructor injection
-
   private final GenreService genreService;
+  // constructor injection
 
   public GenreController(GenreService genreService) {
     this.genreService = genreService;
@@ -33,20 +32,22 @@ public class GenreController {
   // GET REQUESTS
 
   @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  public List<Genre> getAllGenres() {
+  public ResponseEntity<List<Genre>> getAllGenres() {
     System.out.println("All genres endpoint and function");
-    return genreService.findAllGenres();
+    return ResponseEntity.ok(genreService.findAllGenres());
 
   }
 
   // @PathVariable is gekoppeld aan de {id} path in url
   @GetMapping("/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public Genre getGenreById(@PathVariable Long id) {
+  public ResponseEntity<Genre> getGenreById(@PathVariable Long id) {
     System.out.println("Get genre by id function, ID: " + id);
-
-    return genreService.findGenreById(id);
+    try {
+      return ResponseEntity.ok(genreService.findGenreById(id));
+    } catch (GenreNotFoundException exception) {
+      System.out.println(exception.getMessage());
+      return ResponseEntity.notFound().build();
+    }
   }
 
   // POST REQUESTS
@@ -71,21 +72,33 @@ public class GenreController {
   // PUT REQUESTS
 
   @PutMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void updateGenre(@PathVariable Long id, @RequestBody GenreRequest request) {
+  public ResponseEntity<Void> updateGenre(@PathVariable Long id,
+      @RequestBody GenreRequest request) {
 
-    System.out.println("Genre updated");
+    try {
+      genreService.updateGenre(id, request);
+      System.out.println("Genre updated");
+      return ResponseEntity.noContent().build();
+    } catch (GenreNotFoundException exception) {
+      System.out.println(exception.getMessage());
+      return ResponseEntity.notFound().build();
+    }
 
-    genreService.updateGenre(id, request);
+
   }
 
   // DELETE REQUESTS
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteGenre(@PathVariable Long id) {
-    System.out.println("ID: " + id + " deleted");
-    genreService.deleteGenre(id);
+  public ResponseEntity<Void> deleteGenre(@PathVariable Long id) {
+    try {
+      genreService.deleteGenre(id);
+      System.out.println("ID: " + id + " deleted");
+      return ResponseEntity.noContent().build();
+    } catch (GenreNotFoundException exception) {
+      System.out.println(exception.getMessage());
+      return ResponseEntity.notFound().build();
+    }
   }
-
 }

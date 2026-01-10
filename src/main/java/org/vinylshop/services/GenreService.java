@@ -1,12 +1,13 @@
-package org.vinylshop.service;
+package org.vinylshop.services;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.vinylshop.dto.GenreRequest;
+import org.vinylshop.dtos.GenreRequest;
 import org.vinylshop.entities.Genre;
+import org.vinylshop.helpers.GenreNotFoundException;
 
 @Service
 public class GenreService {
@@ -23,8 +24,8 @@ public class GenreService {
   }
 
   public Genre findGenreById(Long id) {
-    return genreRepository.stream().filter(g -> g.getId().equals(id)).findFirst()
-        .orElseThrow(() -> new IndexOutOfBoundsException("Genre met ID " + id + " niet gevonden."));
+    return genreRepository.stream().filter(genre -> genre.getId().equals(id)).findFirst()
+        .orElseThrow(() -> new GenreNotFoundException(id));
   }
 
   public Genre createGenre(Genre genre) {
@@ -53,9 +54,9 @@ public class GenreService {
   private Long findNextId(ArrayList<Genre> genreRepository) {
     Long highest = 0L;
 
-    if(!genreRepository.isEmpty()) {
-      for(Genre genre : genreRepository) {
-        if(genre.getId() > highest) {
+    if (!genreRepository.isEmpty()) {
+      for (Genre genre : genreRepository) {
+        if (genre.getId() > highest) {
           highest = genre.getId();
         }
       }
